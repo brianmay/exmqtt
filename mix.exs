@@ -24,7 +24,7 @@ defmodule ExMQTT.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:emqtt, github: "emqx/emqtt", tag: "v1.2.4"},
+      {:emqtt, github: "emqx/emqtt", tag: "1.4.2"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false}
