@@ -20,6 +20,10 @@ jobs:
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: '3.16.9'
       - name: Retrieve Mix Dependencies Cache
         uses: actions/cache@v2.1.6
         id: mix-cache # id to use in retrieve action
@@ -35,16 +39,8 @@ jobs:
       - name: Build
         run: |
           mix compile
-      - name: Install assets
-        run: |
-          npm install --prefix assets
-      - name: Build assets
-        run: |
-          npm run deploy --prefix assets
       - name: Check Formatting
         run: mix format --check-formatted
-      - name: Check Prettier
-        run: mix prettier
       - name: Run Credo
         run: mix credo --strict
       - name: Run Tests
@@ -65,6 +61,10 @@ jobs:
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: '3.16.9'
       - name: Retrieve Mix Dependencies Cache
         uses: actions/cache@v2.1.6
         id: mix-cache # id to use in retrieve action
