@@ -1,4 +1,4 @@
-name: Run elixir tests
+name: Build and Test
 
 on:
   - push
@@ -6,90 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        elixir: [1.12.1]
-        otp: [24.0.2]
-
-    steps:
-      - uses: actions/checkout@v2.4.0
-      - name: Setup elixir
-        uses: erlef/setup-elixir@v1.11
-        with:
-          elixir-version: ${{ matrix.elixir }}
-          otp-version: ${{ matrix.otp }}
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.12
-        with:
-          cmake-version: '3.16.9'
-      - name: Retrieve Mix Dependencies Cache
-        uses: actions/cache@v2.1.7
-        id: mix-cache # id to use in retrieve action
-        with:
-          path: deps
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-1
-      - name: Install Mix Dependencies
-        if: steps.mix-cache.outputs.cache-hit != 'true'
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
-      - name: Build
-        run: |
-          mix compile
-      - name: Check Formatting
-        run: mix format --check-formatted
-      - name: Run Credo
-        run: mix credo --strict
-      - name: Run Tests
-        run: mix test
-
-  dialyzer:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        elixir: [1.12.1]
-        otp: [24.0.2]
-
-    steps:
-      - uses: actions/checkout@v2.4.0
-      - name: Setup elixir
-        uses: erlef/setup-elixir@v1.11
-        with:
-          elixir-version: ${{ matrix.elixir }}
-          otp-version: ${{ matrix.otp }}
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.12
-        with:
-          cmake-version: '3.16.9'
-      - name: Retrieve Mix Dependencies Cache
-        uses: actions/cache@v2.1.7
-        id: mix-cache # id to use in retrieve action
-        with:
-          path: deps
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-1
-      - name: Install Mix Dependencies
-        if: steps.mix-cache.outputs.cache-hit != 'true'
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
-      - name: Retrieve PLT Cache
-        uses: actions/cache@v2.1.7
-        id: plt-cache
-        with:
-          path: priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}-1
-      - name: Build
-        run: |
-          mix compile
-      - name: Create PLTs
-        if: steps.plt-cache.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p priv/plts
-          mix dialyzer --plt
-      - name: Run dialyzer
-        run: mix dialyzer --no-check
+    name: Setup, Build, Test
+    uses: brianmay/workflows/.github/workflows/elixir.yaml@b8ac8e58821a896616de972c4e8602c3e17a6a46
+    with:
+      build_npm_assets: false
