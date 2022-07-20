@@ -27,7 +27,7 @@ defmodule MqttPotion.MixProject do
       {:emqtt, github: "emqx/emqtt", tag: "1.6.0"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.2.0", only: [:dev, :test], runtime: false},
       {:jason, "~> 1.0"}
     ]
   end
