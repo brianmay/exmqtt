@@ -24,7 +24,7 @@ defmodule MqttPotion.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:emqtt, github: "emqx/emqtt", tag: "1.8.5"},
+      {:emqtt, github: "emqx/emqtt", tag: "1.8.6"},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.3.0", only: [:dev, :test], runtime: false},
